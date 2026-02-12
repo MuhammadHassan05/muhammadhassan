@@ -1,0 +1,78 @@
+{{ 'tisso-style.css' | asset-url | stylesheet_tag }}
+<script src="{{ 'tisso-grid.js' | asset_url }}" defer></script>
+
+<section class="tisso-grid">
+
+    <h2 class="grid-title">
+        {{ section.settings.heading }}
+    </h2>
+
+    <div class="grid-container">
+
+        {% for block in section.blocks %}
+            {% assign product= block.settings.product %}
+
+            <div class="grid-item"
+                    data-product='{{ product | json }}'
+
+                <img src="{{ product.featured_image | image_url: width: 600}}">
+
+                <div class="plus-icon">+</div>
+            
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- POPUP -->
+
+<div class="tisso-popup hidden">
+
+    <div class="popup-box">
+
+        <span class="popup-close">x</span>
+
+        <img id="popup-image">
+
+        <h3 id="popup-title"></h3>
+        <p id="popup=price"></p>
+        <p id="popup-desc"></p>
+        <div id="variant-container"></div>
+
+        <button id="add-to-cart">ADD TO CART</button>
+
+    </div>
+
+</div>
+
+{% schema %}
+{
+    "name": "Tisso Product Grid",
+    "settings": [
+        {
+            "type": "text",
+            "id : "heading",
+            "label": "heading",
+            "default": "Tisso vision in the wild"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "product",
+            "id": "product",
+            "settings": [
+                {
+                    "type": "product",
+                    "id": "product",
+                    "label": "Select Product"
+                }
+            ]
+        }
+    ],
+    "max-block": 6
+}
+{% endschema %}
+            
