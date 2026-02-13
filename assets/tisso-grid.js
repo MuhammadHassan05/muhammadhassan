@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* OPEN POPUP */
 
-  document.querySelectorAll(".grid-item").forEach(item => {
+  document.querySelectorAll("grid-item").forEach(item => {
     item.addEventListener("click", () => {
 
       try {
