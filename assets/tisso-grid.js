@@ -7,41 +7,49 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedVariant = null;
   let currentProduct = null;
 
-  document.querySelectorAll(".grid-item").forEach(item => {
+  /* OPEN POPUP */
 
+  document.querySelectorAll(".grid-item").forEach(item => {
     item.addEventListener("click", () => {
 
-      currentProduct = JSON.parse(item.dataset.product);
+      try {
+        currentProduct = JSON.parse(item.dataset.product);
+      } catch {
+        console.error("Invalid product JSON");
+        return;
+      }
 
       document.getElementById("popup-title").innerText =
         currentProduct.title;
 
       document.getElementById("popup-price").innerText =
-        Shopify.formatMoney(currentProduct.price);
+        Shopify.formatMoney(currentProduct.variants[0].price);
 
       document.getElementById("popup-desc").innerHTML =
         currentProduct.description;
 
       document.getElementById("popup-image").src =
-        currentProduct.featured_image.src;
+        currentProduct.featured_image;
 
       renderVariants(currentProduct);
 
       popup.classList.remove("hidden");
-
     });
-
   });
 
-  closeBtn.addEventListener("click", () => {
-    popup.classList.add("hidden");
-  });
+  /* CLOSE POPUP */
 
+  closeBtn.addEventListener("click", () => popup.classList.add("hidden"));
+
+  popup.addEventListener("click", (e) => {
+    if (e.target === popup) popup.classList.add("hidden");
+  });
 
   /* ADD TO CART */
+
   addBtn.addEventListener("click", () => {
 
-    if(!selectedVariant) return;
+    if (!selectedVariant) return;
 
     fetch("/cart/add.js", {
       method: "POST",
@@ -52,71 +60,69 @@ document.addEventListener("DOMContentLoaded", () => {
       })
     });
 
-    /* SPECIAL JACKET RULE */
-    if(selectedVariant.option1 === "Black" &&
-       selectedVariant.option2 === "Medium"){
+    /* SPECIAL RULE */
 
-        const jacketVariantId = 123456789; // Replace later
+    if (selectedVariant.option1 === "Black" &&
+        selectedVariant.option2 === "Medium") {
 
-        fetch("/cart/add.js", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id: jacketVariantId,
-            quantity: 1
-          })
-        });
+      const jacketVariantId = 123456789; // replace real ID
 
+      fetch("/cart/add.js", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: jacketVariantId,
+          quantity: 1
+        })
+      });
     }
 
+    popup.classList.add("hidden");
   });
 
 });
 
 
-function renderVariants(product){
+/* VARIANT RENDER */
+
+function renderVariants(product) {
 
   const container = document.getElementById("variant-container");
   container.innerHTML = "";
 
   product.options.forEach((option, index) => {
 
-    let select = document.createElement("select");
+    const select = document.createElement("select");
+    select.dataset.index = index;
 
     option.values.forEach(value => {
-      let opt = document.createElement("option");
+      const opt = document.createElement("option");
       opt.value = value;
       opt.innerText = value;
       select.appendChild(opt);
     });
 
+    select.addEventListener("change", () => findVariant(product));
     container.appendChild(select);
-
-  });
-
-  container.querySelectorAll("select").forEach(sel => {
-    sel.addEventListener("change", () => {
-      findVariant(product);
-    });
   });
 
   findVariant(product);
-
 }
 
 
-function findVariant(product){
+/* FIND MATCHING VARIANT */
 
-  const selects = document.querySelectorAll("#variant-container select");
+function findVariant(product) {
 
-  let selectedOptions = Array.from(selects).map(s => s.value);
+  const selects =
+    document.querySelectorAll("#variant-container select");
 
-  let match = product.variants.find(v =>
+  const selectedOptions =
+    Array.from(selects).map(s => s.value);
+
+  const match = product.variants.find(v =>
     JSON.stringify(v.options) === JSON.stringify(selectedOptions)
   );
 
-  if(match){
-    selectedVariant = match;
-  }
-
+  if (match) selectedVariant = match;
 }
