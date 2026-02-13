@@ -15,11 +15,11 @@
       {% if product != blank %}
         <div class="grid-item"
              data-product='{{ product | json | escape }}'>
-
-          <img
-            src="{{ product.featured_image | image_url: width: 600 }}"
-            alt="{{ product.title }}"
-          >
+          
+         
+        {% if product.featured_media %}
+           <img src="{{ product.featured_media | image_url: width: 600 }}" alt="{{ product.title }}">
+        {% endif %}
 
           <div class="plus-icon">+</div>
 
