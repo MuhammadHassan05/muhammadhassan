@@ -83,7 +83,7 @@ document.getElementById("add-to-cart").addEventListener("click", () => {
 
 if(selectedVariant.option1 === "Black" && selectedVariant.option2 === "Medium") { 
     
-    const jacketVariantId = 123456789; 
+    const jacketVariantId = 51949301563668; 
 
     fetch("/cart/add.js", {
         method: "POST",
