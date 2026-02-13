@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const popup = document.querySelector(".tisso-popup");
   const closeBtn = document.querySelector(".popup-close");
+  const addBtn = document.getElementById("add-to-cart");
 
   let selectedVariant = null;
   let currentProduct = null;
@@ -22,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         currentProduct.description;
 
       document.getElementById("popup-image").src =
-        currentProduct.featured_image;
+        currentProduct.featured_image.src;
 
       renderVariants(currentProduct);
 
@@ -36,6 +37,40 @@ document.addEventListener("DOMContentLoaded", () => {
     popup.classList.add("hidden");
   });
 
+
+  /* ADD TO CART */
+  addBtn.addEventListener("click", () => {
+
+    if(!selectedVariant) return;
+
+    fetch("/cart/add.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: selectedVariant.id,
+        quantity: 1
+      })
+    });
+
+    /* SPECIAL JACKET RULE */
+    if(selectedVariant.option1 === "Black" &&
+       selectedVariant.option2 === "Medium"){
+
+        const jacketVariantId = 123456789; // Replace later
+
+        fetch("/cart/add.js", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: jacketVariantId,
+            quantity: 1
+          })
+        });
+
+    }
+
+  });
+
 });
 
 
@@ -47,7 +82,6 @@ function renderVariants(product){
   product.options.forEach((option, index) => {
 
     let select = document.createElement("select");
-    select.dataset.index = index;
 
     option.values.forEach(value => {
       let opt = document.createElement("option");
@@ -81,44 +115,8 @@ function findVariant(product){
     JSON.stringify(v.options) === JSON.stringify(selectedOptions)
   );
 
- اختిన 
-
   if(match){
     selectedVariant = match;
   }
 
 }
-
-
-document.getElementById("add-to-cart").addEventListener("click", () => {
-
-  if(!selectedVariant) return;
-
-  fetch("/cart/add.js", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      id: selectedVariant.id,
-      quantity: 1
-    })
-  });
-
-  /* SPECIAL JACKET RULE */
-
-  if(selectedVariant.option1 === "Black" &&
-     selectedVariant.option2 === "Medium"){
-
-      const jacketVariantId = 51949299728660; 
-
-      fetch("/cart/add.js", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: jacketVariantId,
-          quantity: 1
-        })
-      });
-
-  }
-
-});
