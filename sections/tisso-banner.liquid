@@ -1,79 +1,81 @@
-{{'tisso-style.css' | asset_url | stylesheet_tag}}
+{{ 'tisso-style.css' | asset_url | stylesheet_tag }}
+
 <section class="tisso-banner">
-<div class = "tisso-header">
-<h2>{{section.settings.top_text}}</h2>
-<a href="{{section.settings.choose_link}}" class="choose-btn">
-{{section.settings.choose_text}}
-</a>
-</div>
 
-<div class="tisso-banner-content">
-<h1>{{section.settings.heading }}</h1>
-<p>{{section.settings.description }}</p>
-<a href = "{{section.settings.button_link }}" class="shop-btn">
-{{section.settings.button_text}}
-</a>
+  <div class="tisso-header">
+    <h2>{{ section.settings.top_text }}</h2>
+    <a href="{{ section.settings.choose_link }}" class="choose-btn">
+      {{ section.settings.choose_text }}
+    </a>
+  </div>
 
-</div>
+  <div class="tisso-banner-content">
 
-<div class = "tisso-banner-text">
-{{section.settings.button_text}}
-</div>
+    <h1>{{ section.settings.heading }}</h1>
+
+    <p>{{ section.settings.description }}</p>
+
+    <a href="{{ section.settings.button_link }}" class="shop-btn">
+      {{ section.settings.button_text }}
+    </a>
+
+  </div>
+
+  <div class="tisso-bottom-text">
+    {{ section.settings.bottom_text }}
+  </div>
 
 </section>
+
 {% schema %}
 {
-    "name": "tisso-banner",
-    "settings":[
+  "name": "Tisso Banner",
+  "settings": [
     {
-        "type": "text",
-        "id": "top_text",
-        "label":"Top text",
-        "default": "Find the ideal dift for your loved ones"
-    },
-    {
-        "type": "text",
-        "id": "choose_text",
-        "label":"Choose gift button",
-        "default": "Choose Gift"
+      "type": "text",
+      "id": "top_text",
+      "label": "Top Text",
+      "default": "Find the ideal gift for your loved ones."
     },
     {
-        "type": "url",
-        "id": "choose_link",
-        "label":"Choose gift link",
-        
+      "type": "text",
+      "id": "choose_text",
+      "label": "Choose Gift Button",
+      "default": "CHOOSE GIFT"
     },
     {
-        "type": "text",
-        "id": "heading",
-        "label":"heading",
-        "default": "The Gift Guide"
+      "type": "url",
+      "id": "choose_link",
+      "label": "Choose Gift Link"
     },
     {
-        "type": "textarea",
-        "id": "description",
-        "label":"Description",
-        
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Gift Guide"
     },
     {
-        "type": "text",
-        "id": "button_text",
-        "label":"shop button",
-        "default": "SHOP NOW"
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
     },
     {
-        "type": "url",
-        "id": "button_link",
-        "label":"Shop Link",
-        
+      "type": "text",
+      "id": "button_text",
+      "label": "Shop Button",
+      "default": "SHOP NOW"
     },
-     {
-        "type": "text",
-        "id": "button_text",
-        "label":"Bottom Text",
-        "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Shop Link"
     },
-    ]
+    {
+      "type": "text",
+      "id": "bottom_text",
+      "label": "Bottom Text",
+      "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+    }
+  ]
 }
-
 {% endschema %}
