@@ -12,14 +12,19 @@
     {% for block in section.blocks %}
       {% assign product = block.settings.product %}
 
-      <div class="grid-item"
-           data-product='{{ product | json }}'>
+      {% if product != blank %}
+        <div class="grid-item"
+             data-product='{{ product | json | escape }}'>
 
-        <img src="{{ product.featured_image | image_url: width: 600 }}">
+          <img
+            src="{{ product.featured_image | image_url: width: 600 }}"
+            alt="{{ product.title }}"
+          >
 
-        <div class="plus-icon">+</div>
+          <div class="plus-icon">+</div>
 
-      </div>
+        </div>
+      {% endif %}
 
     {% endfor %}
 
@@ -36,13 +41,13 @@
 
     <span class="popup-close">×</span>
 
-    <img id="popup-image">
+    <img id="popup-image" alt="">
 
     <h3 id="popup-title"></h3>
 
     <p id="popup-price"></p>
 
-    <p id="popup-desc"></p>
+    <div id="popup-desc"></div>
 
     <div id="variant-container"></div>
 
@@ -77,6 +82,11 @@
       ]
     }
   ],
-  "max_blocks": 6
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Tisso Product Grid"
+    }
+  ]
 }
 {% endschema %}
