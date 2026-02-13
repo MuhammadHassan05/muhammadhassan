@@ -18,7 +18,7 @@
           
          
         {% if product.featured_media %}
-           <img src="{{ product.featured_media | image_url: width: 600 }}" alt="{{ product.title }}">
+              {{ product.featured_image | image_url: width: 600 | image_tag: alt: product.title }}
         {% endif %}
 
           <div class="plus-icon">+</div>
