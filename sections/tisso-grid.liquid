@@ -8,17 +8,25 @@
   </h2>
 
   <div class="grid-container">
- {% for block in section.blocks %}
-  {% assign product = block.settings.product %}
-  {% if product != blank %}
-    <div class="grid-item" data-product='{{ product | json }}'>
-      {% if product.featured_image %}
-        {{ product.featured_image | image_url: width: 600 | image_tag: alt: product.title }}
+
+    {% for block in section.blocks %}
+      {% assign product = block.settings.product %}
+
+      {% if product != blank %}
+        <div class="grid-item"
+             data-product='{{ product | json | escape }}'>
+          
+         
+        {% if product.featured_media %}
+              {{ product.featured_image | image_url: width: 600 | image_tag: alt: product.title }}
+        {% endif %}
+
+          <div class="plus-icon">+</div>
+
+        </div>
       {% endif %}
-      <div class="plus-icon">+</div>
-    </div>
-  {% endif %}
-{% endfor %}
+
+    {% endfor %}
 
   </div>
 
